@@ -29,7 +29,7 @@ export default function AdminSettings() {
   const [logoFile, setLogoFile] = useState<File | null>(null);
   const [faviconFile, setFaviconFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
-  const [activeTab, setActiveTab] = useState<"branding" | "templates" | "ai">("branding");
+  const [activeTab, setActiveTab] = useState<"branding" | "templates" | "ai">("templates"); // Default to templates for safety
   const [session, setSession] = useState<any>(null);
   const [kbEntries, setKbEntries] = useState<any[]>([]);
   const [newKbEntry, setNewKbEntry] = useState({ content: "", source: "", category: "General" });
@@ -38,7 +38,12 @@ export default function AdminSettings() {
   useEffect(() => {
     fetch("/api/admin/me")
       .then(r => r.ok ? r.json() : null)
-      .then(setSession);
+      .then(data => {
+        setSession(data);
+        if (data?.role === "SUPER_ADMIN") {
+          setActiveTab("branding");
+        }
+      });
   }, []);
 
   useEffect(() => {
@@ -166,7 +171,9 @@ export default function AdminSettings() {
 
         {/* Tabs */}
         <div style={{ display: "flex", gap: "0", marginBottom: "1.5rem", borderBottom: "2px solid var(--border)" }}>
-          {(["branding", "templates", "ai"] as const).map((tab) => (
+          {(["branding", "templates", "ai"] as const)
+            .filter(tab => session?.role === "SUPER_ADMIN" || tab === "templates")
+            .map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
@@ -605,14 +612,14 @@ export default function AdminSettings() {
             </div>
           )}
 
-          {session?.role === "SUPER_ADMIN" && (
+          {session && (
             <button
               type="submit"
               className="btn btn-primary"
               disabled={loading}
               style={{ width: "100%", fontSize: "1.0625rem", padding: "0.875rem" }}
             >
-              {loading ? "Saving…" : "💾 Save All Settings"}
+              {loading ? "Saving…" : "💾 Save Settings"}
             </button>
           )}
         </form>

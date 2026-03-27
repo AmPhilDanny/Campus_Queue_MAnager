@@ -4,20 +4,31 @@ import { getAdminSession } from "@/lib/admin-auth";
 
 export async function POST(req: Request) {
   const session = await getAdminSession();
-  if (session?.role !== "SUPER_ADMIN") {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
+  if (!session) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
+
+  const isSuper = session.role === "SUPER_ADMIN";
 
   try {
     const data = await req.json();
     
-    const updates = Object.entries(data).map(([key, value]) => {
-      return (prisma as any).setting.upsert({
-        where: { key },
-        update: { value: String(value) },
-        create: { key, value: String(value) },
+    // Define which keys can be updated by non-super admins
+    const allowedForAdmin = ["notification_template", "notification_enabled", "sms_webhook_url"];
+    
+    const updates = Object.entries(data)
+      .filter(([key]) => isSuper || allowedForAdmin.includes(key))
+      .map(([key, value]) => {
+        return (prisma as any).setting.upsert({
+          where: { key },
+          update: { value: String(value) },
+          create: { key, value: String(value) },
+        });
       });
-    });
+
+    if (updates.length === 0) {
+      return NextResponse.json({ error: "No valid settings to update" }, { status: 400 });
+    }
 
     await prisma.$transaction(updates);
     

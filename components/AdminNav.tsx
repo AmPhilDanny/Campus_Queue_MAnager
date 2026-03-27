@@ -20,15 +20,15 @@ export default function AdminNav() {
   const links = [
     { name: "Dashboard",   href: "/admin/dashboard" },
     { name: "Queue",       href: "/admin/queue" },
+    { name: "Settings",    href: "/admin/settings" },
   ];
 
   if (isSuper) {
-    links.push(
+    links.splice(2, 0,
       { name: "Services",    href: "/admin/services" },
       { name: "Admins",      href: "/admin/users" },
       { name: "Form",        href: "/admin/form-management" },
-      { name: "Records",     href: "/admin/records" },
-      { name: "Settings",    href: "/admin/settings" }
+      { name: "Records",     href: "/admin/records" }
     );
   }
 
