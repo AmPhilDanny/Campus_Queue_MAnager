@@ -1,0 +1,48 @@
+CAMPUS QUEUE MANAGER (CQM) - FEATURE SPECIFICATION & SHOWCASE
+==========================================================
+
+1. STUDENT INTERFACE (CLIENT FACING)
+------------------------------------
+* Dynamic Registration: A flexible form that adapts to university needs, capturing essential student data.
+* Real-time Service Selection: Intelligent dropdown for selecting campus departments (Registrar, Bursary, Health Center, etc.).
+* Automated Ticket Generation: Instantly provides students with a unique ticket number and estimated wait time.
+* Mobile-Responsive Design: Optimized for low-latency and diverse mobile devices commonly used in Nigerian campuses.
+
+2. SUPER ADMIN CAPABILITIES (FULL CONTROL)
+-----------------------------------------
+* Advanced Admin Management: Hierarchical control to create, manage, and assign lower-level admins to specific office locations.
+* Dynamic Form Builder: A premium drag-and-drop interface allowing Super Admins to add, edit, reorder, or remove registration fields (e.g., Matric No, Department, Course of Study) without touching code.
+* Global Branding & Settings: Ability to customize the application name, university logo, and default themes to match institutional identity.
+* Service Infrastructure Management: Full CRUD (Create, Read, Update, Delete) capability for all campus departments and service points.
+
+3. OFFICE ADMIN CAPABILITIES (OPERATIONAL CONTROL)
+-------------------------------------------------
+* Role-Based Dashboard: Restricted view focusing exclusively on the admin's assigned department (e.g., Bursary Admin only sees the Bursary queue).
+* Queue Control Center:
+    - "Call Next Student": One-click transition for serving the next person in line.
+    - "Set Wait Time": Manually adjust estimated waiting periods to reflect actual floor conditions.
+    - Real-time Serving Updates: Instant visual feedback on the current student being served.
+* Automatic Reset: Daily queue clearing functionality to maintain system hygiene.
+
+4. CORE ARCHITECTURE & SECURITY
+------------------------------
+* Role-Based Access Control (RBAC): Strict permission layers ensuring data privacy and operational focus.
+* Secure Session Management: Implementation of httpOnly cookies and server-side session APIs to protect against XSS and unauthorized access.
+* Concurrency Handling: High-performance ticket generation using Prisma transactions to prevent duplicate ticket numbers during peak rush hours.
+* Modern Tech Stack: Built with Next.js 15 (App Router), TypeScript, Prisma ORM, and PostgreSQL for enterprise-grade stability.
+
+6. ENHANCED NOTIFICATIONS & QUEUE MANAGEMENT
+-------------------------------------------
+* Global Notification System: Integrated toggle to enable/disable notifications across the system.
+* SMS/Webhook Integration: Support for POSTING real-time ticket alerts to any SMS or third-party webhook provider.
+* Dynamic Queue Control: Admins can instantly open or close specific office queues to manage visitor flow.
+* Adjustable Operational Cadence: Admins can set a "Default Wait Time" per ticket to ensure accurate ETAs from day one.
+* Advanced Analytics: Real-time tracking of "Served" counts and "Average Wait Time" per service point.
+
+7. PREMIUM UNIVERSITY-MODERN THEME
+----------------------------------
+* Modern Aesthetics: Deep blue and white professional palette with refined typography (Plus Jakarta Sans).
+* Persistent Tracking: Browser-based ticket persistence (localStorage) and manual lookup (Ticket # + Student ID) ensure students never lose their place in line.
+* Interactive UI: Smooth transitions, scale-up animations, and "live-dot" indicators for real-time status.
+* Navigation Efficiency: Quick-access "Return to Dashboard" shortcuts and persistent sidebar navigation for admin power-users.
+* Real-time Live Status: Student ticket pages use live-polling to show exact position and instant "It's Your Turn" alerts.

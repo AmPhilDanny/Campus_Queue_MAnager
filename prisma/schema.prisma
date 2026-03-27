@@ -1,0 +1,95 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Service {
+  id        String   @id @default(cuid())
+  name      String
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  queues    Queue[]
+  tickets   Ticket[]
+  admins    Admin[]
+}
+
+model Queue {
+  id            String   @id @default(cuid())
+  serviceId     String
+  service       Service  @relation(fields: [serviceId], references: [id])
+  date          String   // YYYY-MM-DD
+  isOpen        Boolean  @default(true)
+  currentNumber Int      @default(0)
+  waitingCount  Int      @default(0)
+  avgWaitMs     Float    @default(0)
+  tickets       Ticket[]
+
+  @@unique([serviceId, date])
+}
+
+model Ticket {
+  id            String    @id @default(cuid())
+  serviceId     String
+  service       Service   @relation(fields: [serviceId], references: [id])
+  queueId       String
+  queue         Queue     @relation(fields: [queueId], references: [id])
+  ticketNumber  Int
+  status        String    @default("waiting") // waiting, called, served, skipped
+  createdAt     DateTime  @default(now())
+  calledAt      DateTime?
+  servedAt      DateTime?
+  customerName  String?
+  customerPhone String?
+  
+  // Existing fields (kept for compatibility)
+  studentNumber String?
+  department    String?
+  course        String?
+  email         String?
+  description   String?
+  
+  // Dynamic fields storage
+  additionalData Json?
+  
+  channel       String    @default("web") // web, email, sms
+  manualWaitTime Int?      // Manual override for ETA in minutes
+}
+
+model Admin {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String   // Hashed
+  role      Role     @default(ADMIN)
+  officeId  String?
+  office    Service? @relation(fields: [officeId], references: [id])
+  createdAt DateTime @default(now())
+}
+
+enum Role {
+  SUPER_ADMIN
+  ADMIN
+}
+
+model FormField {
+  id          String   @id @default(cuid())
+  name        String   // e.g. "studentNumber"
+  label       String   // e.g. "Matric / Student No"
+  type        String   // text, number, select, email, textarea
+  required    Boolean  @default(true)
+  placeholder String?
+  options     String?  // For select, comma-separated
+  order       Int      @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+}
+
+model Setting {
+  id    String @id @default(cuid())
+  key   String @unique
+  value String
+}
