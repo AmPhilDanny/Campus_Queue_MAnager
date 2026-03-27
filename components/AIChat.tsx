@@ -82,7 +82,27 @@ export default function AIChat({ settings }: { settings: any }) {
           justifyContent: "center",
         }}
       >
-        {isOpen ? <X size={28} /> : <Sparkles size={28} />}
+        {isOpen ? (
+          <X size={28} />
+        ) : (
+          <div style={{ position: "relative" }}>
+            <Bot size={32} strokeWidth={2.5} />
+            <motion.div
+              animate={{ scale: [1, 1.2, 1] }}
+              transition={{ repeat: Infinity, duration: 2 }}
+              style={{
+                position: "absolute",
+                top: "-4px",
+                right: "-4px",
+                width: "12px",
+                height: "12px",
+                background: "#10b981",
+                borderRadius: "50%",
+                border: "2px solid white",
+              }}
+            />
+          </div>
+        )}
       </motion.button>
 
       {/* Chat Window */}
