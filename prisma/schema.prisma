@@ -93,3 +93,13 @@ model Setting {
   key   String @unique
   value String
 }
+
+model KnowledgeBase {
+  id        String   @id @default(cuid())
+  content   String   // The actual information for the AI
+  source    String?  // Where it came from (e.g., "Registrar FAQ")
+  category  String   @default("General") // e.g., "Admissions", "IT Support"
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

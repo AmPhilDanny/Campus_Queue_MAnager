@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/Toast";
 import { SkeletonText, SkeletonBlock } from "@/components/Skeleton";
+import AIChat from "@/components/AIChat";
 
 export default function Home() {
   const [services, setServices] = useState<any[]>([]);
@@ -329,6 +330,7 @@ export default function Home() {
           </a>
         </footer>
       </div>
+      <AIChat settings={settings} />
     </div>
   );
 }

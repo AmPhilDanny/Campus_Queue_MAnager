@@ -29,8 +29,10 @@ export default function AdminSettings() {
   const [logoFile, setLogoFile] = useState<File | null>(null);
   const [faviconFile, setFaviconFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
-  const [activeTab, setActiveTab] = useState<"branding" | "templates">("branding");
+  const [activeTab, setActiveTab] = useState<"branding" | "templates" | "ai">("branding");
   const [session, setSession] = useState<any>(null);
+  const [kbEntries, setKbEntries] = useState<any[]>([]);
+  const [newKbEntry, setNewKbEntry] = useState({ content: "", source: "", category: "General" });
   const { showToast } = useToast();
 
   useEffect(() => {
@@ -51,6 +53,40 @@ export default function AdminSettings() {
       )
       .catch(() => showToast("Failed to load settings.", "error"));
   }, []);
+
+  useEffect(() => {
+    if (activeTab === "ai" && session?.role === "SUPER_ADMIN") {
+      fetchKb();
+    }
+  }, [activeTab, session]);
+
+  const fetchKb = async () => {
+    const res = await fetch("/api/admin/knowledge-base");
+    if (res.ok) setKbEntries(await res.json());
+  };
+
+  const handleKbSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const res = await fetch("/api/admin/knowledge-base", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(newKbEntry),
+    });
+    if (res.ok) {
+      showToast("Training data added!", "success");
+      setNewKbEntry({ content: "", source: "", category: "General" });
+      fetchKb();
+    }
+  };
+
+  const handleKbDelete = async (id: string) => {
+    if (!confirm("Delete this training data?")) return;
+    const res = await fetch(`/api/admin/knowledge-base?id=${id}`, { method: "DELETE" });
+    if (res.ok) {
+      showToast("Entry removed.", "success");
+      fetchKb();
+    }
+  };
 
   const handleUpload = async (file: File, type: string) => {
     const formData = new FormData();
@@ -130,7 +166,7 @@ export default function AdminSettings() {
 
         {/* Tabs */}
         <div style={{ display: "flex", gap: "0", marginBottom: "1.5rem", borderBottom: "2px solid var(--border)" }}>
-          {(["branding", "templates"] as const).map((tab) => (
+          {(["branding", "templates", "ai"] as const).map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
@@ -146,7 +182,7 @@ export default function AdminSettings() {
                 marginBottom: "-2px",
               }}
             >
-              {tab === "branding" ? "🎨 Branding" : "📝 Notification Template"}
+              {tab === "branding" ? "🎨 Branding" : tab === "templates" ? "📝 Templates" : "🤖 AI Training"}
             </button>
           ))}
         </div>
@@ -444,6 +480,129 @@ export default function AdminSettings() {
                 </div>
               </div>
             </>
+          )}
+
+          {/* ── AI TRAINING TAB ── */}
+          {activeTab === "ai" && (
+            <div style={{ animation: "fade-in 0.3s ease" }}>
+              <div className="card" style={{ marginBottom: "1.5rem" }}>
+                <h3 style={{ marginBottom: "0.5rem" }}>AI Chat Configuration</h3>
+                <p style={{ fontSize: "0.9375rem", color: "var(--text-muted)", marginBottom: "1.5rem" }}>
+                  Configure how the AI assistant behaves and what data it uses to answer student queries.
+                </p>
+
+                <div style={{ display: "flex", gap: "2rem", marginBottom: "1.5rem", background: "#f8fafc", padding: "1rem", borderRadius: "8px", border: "1px solid var(--border)" }}>
+                  <div className="form-group" style={{ marginBottom: 0 }}>
+                    <label style={{ display: "flex", alignItems: "center", gap: "0.5rem", cursor: "pointer" }}>
+                      <input
+                        type="checkbox"
+                        checked={settings.ai_chat_enabled === "true"}
+                        onChange={(e) => set("ai_chat_enabled", e.target.checked ? "true" : "false")}
+                        style={{ width: "18px", height: "18px" }}
+                      />
+                      <span style={{ fontWeight: 600 }}>Enable AI Chatbot for Students</span>
+                    </label>
+                  </div>
+                </div>
+
+                <div className="form-group">
+                  <label>Bot Display Name</label>
+                  <input
+                    type="text"
+                    value={settings.ai_bot_name || "Campus Assistant"}
+                    onChange={(e) => set("ai_bot_name", e.target.value)}
+                    placeholder="e.g. Campus Assistant"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>System Instructions (Prompt)</label>
+                  <textarea
+                    value={settings.ai_system_prompt || "You are a helpful campus assistant. Answer questions clearly and professionally based on the provided organization data."}
+                    onChange={(e) => set("ai_system_prompt", e.target.value)}
+                    rows={4}
+                    placeholder="Tell the AI how to behave..."
+                  />
+                </div>
+              </div>
+
+              <div className="card" style={{ marginBottom: "1.5rem" }}>
+                <h3 style={{ marginBottom: "1rem" }}>Add Training Data</h3>
+                <form onSubmit={handleKbSubmit}>
+                  <div className="form-group">
+                    <label>Content (Training Text)</label>
+                    <textarea
+                      value={newKbEntry.content}
+                      onChange={(e) => setNewKbEntry({ ...newKbEntry, content: e.target.value })}
+                      rows={5}
+                      placeholder="Paste FAQ details, office hours, or procedures here..."
+                      required
+                    />
+                  </div>
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+                    <div className="form-group">
+                      <label>Source (Optional)</label>
+                      <input
+                        type="text"
+                        value={newKbEntry.source}
+                        onChange={(e) => setNewKbEntry({ ...newKbEntry, source: e.target.value })}
+                        placeholder="e.g. Student Handbook"
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label>Category</label>
+                      <select
+                        value={newKbEntry.category}
+                        onChange={(e) => setNewKbEntry({ ...newKbEntry, category: e.target.value })}
+                      >
+                        <option value="General">General</option>
+                        <option value="Admissions">Admissions</option>
+                        <option value="Finance">Finance</option>
+                        <option value="Technical">Technical</option>
+                      </select>
+                    </div>
+                  </div>
+                  <button type="submit" className="btn btn-secondary" style={{ width: "100%", background: "#f1f5f9" }}>
+                    ➕ Add to Knowledge Base
+                  </button>
+                </form>
+              </div>
+
+              <div className="card">
+                <h3 style={{ marginBottom: "1rem" }}>Knowledge Base ({kbEntries.length})</h3>
+                <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+                  {kbEntries.length === 0 ? (
+                    <p style={{ color: "var(--text-muted)", textAlign: "center", padding: "2rem" }}>
+                      No training data added yet. The AI will use general knowledge.
+                    </p>
+                  ) : (
+                    kbEntries.map((entry) => (
+                      <div key={entry.id} style={{ padding: "1rem", background: "#f8fafc", borderRadius: "10px", border: "1px solid var(--border)", position: "relative" }}>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "0.5rem" }}>
+                          <span style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--primary)", background: "#eff6ff", padding: "0.2rem 0.5rem", borderRadius: "4px" }}>
+                            {entry.category}
+                          </span>
+                          <button 
+                            onClick={() => handleKbDelete(entry.id)}
+                            style={{ background: "none", border: "none", color: "var(--error)", cursor: "pointer", fontSize: "0.875rem" }}
+                          >
+                            Delete
+                          </button>
+                        </div>
+                        <p style={{ fontSize: "0.875rem", color: "var(--text-main)", whiteSpace: "pre-wrap" }}>
+                          {entry.content}
+                        </p>
+                        {entry.source && (
+                          <p style={{ fontSize: "0.75rem", color: "var(--text-muted)", marginTop: "0.5rem" }}>
+                            Source: {entry.source}
+                          </p>
+                        )}
+                      </div>
+                    ))
+                  )}
+                </div>
+              </div>
+            </div>
           )}
 
           {session?.role === "SUPER_ADMIN" && (
