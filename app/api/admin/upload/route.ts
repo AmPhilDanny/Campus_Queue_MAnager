@@ -1,6 +1,4 @@
 import { NextResponse } from "next/server";
-import { writeFile, mkdir } from "fs/promises";
-import { join } from "path";
 import { getAdminSession } from "@/lib/admin-auth";
 
 export async function POST(req: Request) {
@@ -19,19 +17,11 @@ export async function POST(req: Request) {
     }
 
     const buffer = Buffer.from(await file.arrayBuffer());
-    const originalName = file.name || "unnamed-file";
-    const extension = originalName.split('.').pop() || (type === 'favicon' ? 'ico' : 'png');
-    const fileName = `${type}-${Date.now()}.${extension}`;
-    const uploadDir = join(process.cwd(), "public", "uploads");
-    
-    // Ensure directory exists
-    await mkdir(uploadDir, { recursive: true });
-    
-    const filePath = join(uploadDir, fileName);
-    await writeFile(filePath, buffer);
+    const base64Data = buffer.toString('base64');
+    const mimeType = file.type || (type === 'favicon' ? 'image/x-icon' : 'image/png');
+    const dataUrl = `data:${mimeType};base64,${base64Data}`;
 
-    const publicUrl = `/uploads/${fileName}`;
-    return NextResponse.json({ url: publicUrl });
+    return NextResponse.json({ url: dataUrl });
   } catch (err: any) {
     return NextResponse.json({ error: "Upload failed: " + err.message }, { status: 500 });
   }
