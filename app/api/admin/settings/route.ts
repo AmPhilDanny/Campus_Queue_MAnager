@@ -2,6 +2,18 @@ import { NextResponse } from "next/server";
 import prisma from "@/lib/db";
 import { getAdminSession } from "@/lib/admin-auth";
 
+export async function GET() {
+  const session = await getAdminSession();
+  if (!session || session.role !== "SUPER_ADMIN") {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const settingsArray = await (prisma as any).setting.findMany();
+  const settings = Object.fromEntries(settingsArray.map((s: any) => [s.key, s.value]));
+
+  return NextResponse.json(settings);
+}
+
 export async function POST(req: Request) {
   const session = await getAdminSession();
   if (!session) {

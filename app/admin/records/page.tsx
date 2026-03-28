@@ -140,7 +140,7 @@ export default function RecordsPage() {
   };
 
   return (
-    <div className="admin-container">
+    <div className="admin-container" style={{ maxWidth: "1200px", background: "linear-gradient(180deg, #f8fafc 0%, #eff6ff 100%)", borderRadius: "24px", marginTop: "1rem", boxShadow: "0 4px 20px rgba(0,0,0,0.03)" }}>
       <AdminNav />
       <main className="admin-main">
         <header style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "2rem" }}>

@@ -6,7 +6,17 @@ import { MessageSquare, X, Send, Bot, User, Loader2, Sparkles } from "lucide-rea
 
 export default function AIChat({ settings }: { settings: any }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const [messages, setMessages] = useState<{ role: "user" | "model", text: string }[]>([]);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 640);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -114,18 +124,18 @@ export default function AIChat({ settings }: { settings: any }) {
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             style={{
               position: "fixed",
-              bottom: "6.5rem",
-              right: "2rem",
-              width: "380px",
-              height: "550px",
+              bottom: isMobile ? "0" : "6.5rem",
+              right: isMobile ? "0" : "2rem",
+              width: isMobile ? "100%" : "380px",
+              height: isMobile ? "100%" : "550px",
               background: "white",
-              borderRadius: "20px",
+              borderRadius: isMobile ? "0" : "20px",
               boxShadow: "0 20px 50px -10px rgba(0,0,0,0.15)",
               display: "flex",
               flexDirection: "column",
               overflow: "hidden",
               zIndex: 1000,
-              border: "1px solid #e2e8f0",
+              border: isMobile ? "none" : "1px solid #e2e8f0",
             }}
           >
             {/* Header */}
@@ -137,15 +147,24 @@ export default function AIChat({ settings }: { settings: any }) {
                 display: "flex",
                 alignItems: "center",
                 gap: "0.75rem",
+                paddingTop: isMobile ? "env(safe-area-inset-top, 1.25rem)" : "1.25rem",
               }}
             >
               <div style={{ background: "rgba(255,255,255,0.2)", padding: "0.5rem", borderRadius: "12px" }}>
                 <Bot size={24} />
               </div>
-              <div>
+              <div style={{ flex: 1 }}>
                 <h4 style={{ margin: 0, color: "white", fontSize: "1rem" }}>{botName}</h4>
                 <p style={{ margin: 0, fontSize: "0.75rem", opacity: 0.8 }}>Online · AI Assistant</p>
               </div>
+              {isMobile && (
+                <button 
+                  onClick={() => setIsOpen(false)}
+                  style={{ background: "none", border: "none", color: "white", padding: "0.5rem" }}
+                >
+                  <X size={24} />
+                </button>
+              )}
             </div>
 
             {/* Messages Area */}
@@ -221,6 +240,7 @@ export default function AIChat({ settings }: { settings: any }) {
               onSubmit={handleSend}
               style={{
                 padding: "1rem",
+                paddingBottom: isMobile ? "calc(env(safe-area-inset-bottom, 1rem) + 0.5rem)" : "1rem",
                 background: "white",
                 borderTop: "1px solid #e2e8f0",
                 display: "flex",

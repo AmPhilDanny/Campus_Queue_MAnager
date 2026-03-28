@@ -2,19 +2,26 @@ import { NextResponse } from "next/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import prisma from "@/lib/db";
 
-const genAI = new GoogleGenerativeAI(process.env.GOOGLE_AI_API_KEY || "");
-
 export async function POST(req: Request) {
   try {
     const { message, history } = await req.json();
 
-    if (!process.env.GOOGLE_AI_API_KEY) {
+    // 1. Fetch System Settings for Identity & API Key
+    const settingsArray = await (prisma as any).setting.findMany();
+    const settings = Object.fromEntries(settingsArray.map((s: any) => [s.key, s.value]));
+
+    const apiKey = settings.google_ai_api_key || process.env.GOOGLE_AI_API_KEY;
+
+    if (!apiKey) {
       return NextResponse.json({ 
-        error: "AI service not configured. Please add GOOGLE_AI_API_KEY to environment variables." 
+        error: "AI service not configured. Please add GOOGLE_AI_API_KEY to environment variables on the super admin panel." 
       }, { status: 500 });
     }
 
-    // 1. Fetch Knowledge Base for context (RAG)
+    // Initialize Gemini with the key
+    const genAI = new GoogleGenerativeAI(apiKey);
+
+    // 2. Fetch Knowledge Base for context (RAG)
     const kbEntries = await prisma.knowledgeBase.findMany({
       where: { isActive: true },
       select: { content: true, category: true }
@@ -23,10 +30,6 @@ export async function POST(req: Request) {
     const context = kbEntries
       .map(e => `[${e.category}]: ${e.content}`)
       .join("\n\n");
-
-    // 2. Fetch System Settings for Identity
-    const settingsArray = await (prisma as any).setting.findMany();
-    const settings = Object.fromEntries(settingsArray.map((s: any) => [s.key, s.value]));
 
     const botName = settings.ai_bot_name || "Campus Assistant";
     const campusName = settings.campus_name || "the university";

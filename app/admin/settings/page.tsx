@@ -47,17 +47,25 @@ export default function AdminSettings() {
   }, []);
 
   useEffect(() => {
-    fetch("/api/settings")
-      .then((r) => r.json())
-      .then((data) =>
+    const fetchSettings = async () => {
+      try {
+        const endpoint = session?.role === "SUPER_ADMIN" ? "/api/admin/settings" : "/api/settings";
+        const res = await fetch(endpoint);
+        const data = await res.json();
         setSettings((prev: any) => ({
           ...prev,
           ...data,
           notification_template: data.notification_template || DEFAULT_TEMPLATE,
-        }))
-      )
-      .catch(() => showToast("Failed to load settings.", "error"));
-  }, []);
+        }));
+      } catch {
+        showToast("Failed to load settings.", "error");
+      }
+    };
+
+    if (session) {
+      fetchSettings();
+    }
+  }, [session]);
 
   useEffect(() => {
     if (activeTab === "ai" && session?.role === "SUPER_ADMIN") {
@@ -531,6 +539,22 @@ export default function AdminSettings() {
                     placeholder="Tell the AI how to behave..."
                   />
                 </div>
+
+                {session?.role === "SUPER_ADMIN" && (
+                  <div className="form-group" style={{ marginTop: "1.5rem", borderTop: "1px solid var(--border)", paddingTop: "1.5rem" }}>
+                    <label style={{ color: "var(--primary)", fontWeight: 700 }}>Google Gemini API Key (Required for AI)</label>
+                    <input
+                      type="password"
+                      value={settings.google_ai_api_key || ""}
+                      onChange={(e) => set("google_ai_api_key", e.target.value)}
+                      placeholder="Enter your GOOGLE_AI_API_KEY..."
+                      autoComplete="off"
+                    />
+                    <p style={{ fontSize: "0.75rem", color: "var(--text-muted)", marginTop: "0.3rem" }}>
+                      Get yours at <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer" style={{ color: "var(--primary)", textDecoration: "underline" }}>Google AI Studio</a>.
+                    </p>
+                  </div>
+                )}
               </div>
 
               <div className="card" style={{ marginBottom: "1.5rem" }}>
