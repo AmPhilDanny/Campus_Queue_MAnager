@@ -41,9 +41,9 @@ export default function TicketStatus() {
   }, [id]);
 
   useEffect(() => {
-    if (ticket && (ticket.status === "served" || ticket.status === "skipped")) {
+    if (ticket && (ticket.error || ticket.status === "served" || ticket.status === "skipped")) {
       const savedId = localStorage.getItem("cqm_active_ticket_id");
-      if (savedId === id) {
+      if (savedId === id || ticket.error) {
         localStorage.removeItem("cqm_active_ticket_id");
       }
     }

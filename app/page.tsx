@@ -23,7 +23,23 @@ export default function Home() {
   useEffect(() => {
     // Check for active ticket in localStorage
     const savedId = localStorage.getItem("cqm_active_ticket_id");
-    if (savedId) setActiveTicketId(savedId);
+    if (savedId) {
+      // Verify the ticket still exists
+      fetch(`/api/tickets/${savedId}`)
+        .then((r) => r.json())
+        .then((data) => {
+          if (data && !data.error && data.status !== "served" && data.status !== "skipped") {
+            setActiveTicketId(savedId);
+          } else {
+            localStorage.removeItem("cqm_active_ticket_id");
+            setActiveTicketId(null);
+          }
+        })
+        .catch(() => {
+          // If we can't reach the server, keep it just in case
+          setActiveTicketId(savedId);
+        });
+    }
   }, []);
 
   useEffect(() => {
