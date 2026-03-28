@@ -247,79 +247,82 @@ export default function RecordsPage() {
         {/* Queue Detail Modal */}
         {selectedQueue && (
           <div className="modal-overlay">
-            <div className="modal-content card" style={{ maxWidth: "900px", width: "95%", maxHeight: "90vh", overflowY: "auto" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "1.5rem" }}>
+            <div className="modal-content-styled" style={{ maxWidth: "900px", width: "95%", maxHeight: "90vh", overflowY: "auto" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "2rem" }}>
                 <div>
-                  <h2 style={{ marginBottom: "0.25rem" }}>{selectedQueue.service.name}</h2>
-                  <p style={{ color: "var(--text-muted)" }}>Records for {selectedQueue.date}</p>
+                  <h2 style={{ marginBottom: "0.25rem", color: "white" }}>{selectedQueue.service.name}</h2>
+                  <p style={{ color: "rgba(255,255,255,0.7)" }}>Records for {selectedQueue.date}</p>
                 </div>
-                <button className="btn btn-ghost" onClick={() => setSelectedQueue(null)}>
+                <button 
+                  className="btn-close" 
+                  onClick={() => setSelectedQueue(null)}
+                  style={{ background: "rgba(255,255,255,0.1)", color: "white", border: "1px solid rgba(255,255,255,0.2)", borderRadius: "12px", padding: "0.5rem" }}
+                >
                   <X size={24} />
                 </button>
               </div>
 
-              <div style={{ display: "flex", gap: "1rem", marginBottom: "2rem", flexWrap: "wrap" }}>
-                <div className="card" style={{ flex: 1, minWidth: "150px", textAlign: "center", padding: "1rem" }}>
-                  <p style={{ fontSize: "0.75rem", color: "var(--text-muted)", marginBottom: "0.25rem" }}>Status</p>
+              <div style={{ display: "flex", gap: "1.25rem", marginBottom: "2.5rem", flexWrap: "wrap" }}>
+                <div className="stat-card">
+                  <p style={{ fontSize: "0.75rem", color: "var(--text-muted)", marginBottom: "0.5rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em" }}>Status</p>
                   <button 
                     className={`btn ${selectedQueue.isOpen ? 'btn-primary' : 'btn-ghost'}`}
-                    style={{ fontSize: "0.875rem", padding: "0.25rem 0.75rem" }}
+                    style={{ fontSize: "0.875rem", padding: "0.4rem 1rem", borderRadius: "100px" }}
                     onClick={() => handleToggleQueueStatus(!selectedQueue.isOpen)}
                   >
                     {selectedQueue.isOpen ? "Open" : "Closed"}
                   </button>
                 </div>
-                <div className="card" style={{ flex: 1, minWidth: "150px", textAlign: "center", padding: "1rem" }}>
-                  <p style={{ fontSize: "0.75rem", color: "var(--text-muted)", marginBottom: "0.25rem" }}>Total Tickets</p>
-                  <p style={{ fontSize: "1.25rem", fontWeight: 700 }}>{selectedQueue.tickets.length}</p>
+                <div className="stat-card">
+                  <p style={{ fontSize: "0.75rem", color: "var(--text-muted)", marginBottom: "0.5rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em" }}>Total Tickets</p>
+                  <p style={{ fontSize: "1.75rem", fontWeight: 800, color: "var(--primary)" }}>{selectedQueue.tickets.length}</p>
                 </div>
-                <div className="card" style={{ flex: 1, minWidth: "150px", textAlign: "center", padding: "1rem" }}>
-                  <p style={{ fontSize: "0.75rem", color: "var(--text-muted)", marginBottom: "0.25rem" }}>Waiting</p>
-                  <p style={{ fontSize: "1.25rem", fontWeight: 700 }}>{selectedQueue.tickets.filter((t: any) => t.status === 'waiting').length}</p>
+                <div className="stat-card">
+                  <p style={{ fontSize: "0.75rem", color: "var(--text-muted)", marginBottom: "0.5rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em" }}>Waiting</p>
+                  <p style={{ fontSize: "1.75rem", fontWeight: 800, color: "var(--warning)" }}>{selectedQueue.tickets.filter((t: any) => t.status === 'waiting').length}</p>
                 </div>
               </div>
 
-              <div className="card" style={{ padding: 0, overflow: "hidden" }}>
-                <table className="admin-table" style={{ width: "100%", borderCollapse: "collapse" }}>
-                  <thead style={{ background: "rgba(255,255,255,0.05)" }}>
+              <div className="table-container">
+                <table className="admin-table-styled" style={{ width: "100%", borderCollapse: "collapse" }}>
+                  <thead>
                     <tr>
-                      <th style={{ padding: "0.75rem", textAlign: "left" }}>#</th>
-                      <th style={{ padding: "0.75rem", textAlign: "left" }}>Student / Client</th>
-                      <th style={{ padding: "0.75rem", textAlign: "center" }}>Status</th>
-                      <th style={{ padding: "0.75rem", textAlign: "center" }}>Created</th>
-                      <th style={{ padding: "0.75rem", textAlign: "right" }}>Actions</th>
+                      <th style={{ padding: "1.25rem", textAlign: "left" }}>#</th>
+                      <th style={{ padding: "1.25rem", textAlign: "left" }}>Student / Client</th>
+                      <th style={{ padding: "1.25rem", textAlign: "center" }}>Status</th>
+                      <th style={{ padding: "1.25rem", textAlign: "center" }}>Created</th>
+                      <th style={{ padding: "1.25rem", textAlign: "right" }}>Actions</th>
                     </tr>
                   </thead>
                   <tbody>
                     {selectedQueue.tickets.length === 0 ? (
                       <tr>
-                        <td colSpan={5} style={{ padding: "2rem", textAlign: "center", color: "var(--text-muted)" }}>
+                        <td colSpan={5} style={{ padding: "3rem", textAlign: "center", color: "var(--text-muted)" }}>
                           No tickets found for this day.
                         </td>
                       </tr>
                     ) : (
                       selectedQueue.tickets.map((t: any) => (
-                        <tr key={t.id} style={{ borderTop: "1px solid rgba(255,255,255,0.1)" }}>
-                          <td style={{ padding: "0.75rem", fontWeight: 700 }}>{t.ticketNumber}</td>
-                          <td style={{ padding: "0.75rem" }}>
-                            <div style={{ fontWeight: 600 }}>{t.customerName || "Anonymous"}</div>
-                            <div style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>{t.studentNumber || t.customerPhone || "No ID"}</div>
+                        <tr key={t.id}>
+                          <td style={{ padding: "1.25rem", fontWeight: 800, color: "var(--primary)" }}>{t.ticketNumber}</td>
+                          <td style={{ padding: "1.25rem" }}>
+                            <div style={{ fontWeight: 700, color: "var(--text-main)" }}>{t.customerName || "Anonymous"}</div>
+                            <div style={{ fontSize: "0.8125rem", color: "var(--text-muted)", marginTop: "0.2rem" }}>{t.studentNumber || t.customerPhone || "No ID"}</div>
                           </td>
-                          <td style={{ padding: "0.75rem", textAlign: "center" }}>
+                          <td style={{ padding: "1.25rem", textAlign: "center" }}>
                             <span className={`badge badge-${t.status === 'served' ? 'primary' : t.status === 'waiting' ? 'secondary' : 'error'}`}>
                               {t.status}
                             </span>
                           </td>
-                          <td style={{ padding: "0.75rem", textAlign: "center", fontSize: "0.875rem" }}>
+                          <td style={{ padding: "1.25rem", textAlign: "center", fontSize: "0.9375rem", fontWeight: 500 }}>
                             {new Date(t.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                           </td>
-                          <td style={{ padding: "0.75rem", textAlign: "right" }}>
+                          <td style={{ padding: "1.25rem", textAlign: "right" }}>
                             <button 
-                              className="btn btn-ghost" 
-                              style={{ color: "var(--error)" }}
+                              className="btn-action-delete"
                               onClick={() => handleDeleteTicket(t.id, t.status)}
                             >
-                              <Trash2 size={16} />
+                              <Trash2 size={18} />
                             </button>
                           </td>
                         </tr>
@@ -340,27 +343,85 @@ export default function RecordsPage() {
           left: 0;
           right: 0;
           bottom: 0;
-          background: rgba(0,0,0,0.7);
+          background: rgba(15, 23, 42, 0.85);
+          backdrop-filter: blur(12px);
+          -webkit-backdrop-filter: blur(12px);
           display: flex;
           align-items: center;
           justify-content: center;
           z-index: 1000;
-          padding: 1rem;
+          padding: 1.5rem;
+          animation: fade-in 0.2s ease-out;
         }
-        .modal-content {
+        .modal-content-styled {
           width: 100%;
-          background: var(--bg-card);
+          background: #1e293b;
+          border-radius: 24px;
+          padding: 2.5rem;
+          box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .stat-card {
+          flex: 1;
+          min-width: 180px;
+          background: white;
+          padding: 1.5rem;
+          border-radius: 20px;
+          text-align: center;
+          box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        .table-container {
+          background: white;
+          border-radius: 24px;
+          overflow: hidden;
+          box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        .admin-table-styled thead {
+          background: #f8fafc;
+          border-bottom: 1px solid #e2e8f0;
+        }
+        .admin-table-styled th {
+          font-size: 0.8125rem;
+          font-weight: 700;
+          color: #64748b;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+        }
+        .admin-table-styled tr:not(:last-child) {
+          border-bottom: 1px solid #f1f5f9;
+        }
+        .admin-table-styled tr:hover {
+          background: #fcfdfe;
         }
         .badge {
-          padding: 0.2rem 0.5rem;
-          border-radius: 99px;
-          font-size: 0.7rem;
-          font-weight: 600;
+          padding: 0.4rem 0.875rem;
+          border-radius: 100px;
+          font-size: 0.75rem;
+          font-weight: 700;
           text-transform: uppercase;
+          letter-spacing: 0.05em;
         }
-        .badge-primary { background: #16a34a; color: white; }
-        .badge-secondary { background: #2563eb; color: white; }
-        .badge-error { background: #dc2626; color: white; }
+        .badge-primary { background: #dcfce7; color: #166534; }
+        .badge-secondary { background: #dbeafe; color: #1e40af; }
+        .badge-error { background: #fee2e2; color: #991b1b; }
+        .btn-action-delete {
+          background: #fee2e2;
+          color: #ef4444;
+          border: none;
+          padding: 0.6rem;
+          border-radius: 12px;
+          cursor: pointer;
+          transition: all 0.2s;
+        }
+        .btn-action-delete:hover {
+          background: #fecaca;
+          transform: scale(1.05);
+        }
+        .btn-close:hover {
+          background: rgba(255,255,255,0.2) !important;
+          transform: rotate(90deg);
+          transition: all 0.3s;
+        }
       `}</style>
     </div>
   );
