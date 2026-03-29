@@ -79,6 +79,26 @@ export default function ManageServices() {
     }
   };
 
+  if (session && session.role !== "SUPER_ADMIN") {
+    return (
+      <div className="admin-container">
+        <AdminNav />
+        <main className="admin-main">
+          <header className="admin-header">
+            <h1>Access Denied</h1>
+            <p>Only Super Admins can manage campus offices and services.</p>
+          </header>
+          <div className="card" style={{ textAlign: "center", padding: "4rem" }}>
+            <p style={{ color: "var(--text-muted)", marginBottom: "1.5rem" }}>
+              You do not have permission to view or manage services.
+            </p>
+            <a href="/admin/dashboard" className="btn btn-primary">Return to Dashboard</a>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
   return (
     <div className="admin-container">
       <AdminNav />

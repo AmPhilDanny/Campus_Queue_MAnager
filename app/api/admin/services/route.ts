@@ -4,6 +4,11 @@ import prisma from "@/lib/db";
 import { getAdminSession } from "@/lib/admin-auth";
 
 export async function GET() {
+  const session = await getAdminSession();
+  if (session?.role !== "SUPER_ADMIN") {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
+  }
+
   const services = await prisma.service.findMany({
     orderBy: { createdAt: "desc" },
   });

@@ -16,6 +16,16 @@ export default function RecordsPage() {
   const [viewLoading, setViewLoading] = useState(false);
   const { showToast } = useToast();
 
+  useEffect(() => {
+    fetch("/api/admin/me")
+      .then(r => r.ok ? r.json() : null)
+      .then(data => {
+        if (data && data.role !== "SUPER_ADMIN") {
+          window.location.href = "/admin/dashboard";
+        }
+      });
+  }, []);
+
   const fetchRecords = async () => {
     setLoading(true);
     try {

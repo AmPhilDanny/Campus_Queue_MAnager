@@ -37,6 +37,14 @@ export default function AdminUsersPage() {
   };
 
   useEffect(() => {
+    fetch("/api/admin/me")
+      .then(r => r.ok ? r.json() : null)
+      .then(data => {
+        if (data && data.role !== "SUPER_ADMIN") {
+          window.location.href = "/admin/dashboard";
+        }
+      });
+
     fetchUsers();
   }, []);
 
