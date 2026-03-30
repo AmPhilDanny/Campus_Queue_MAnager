@@ -6,10 +6,15 @@ import AdminNav from "@/components/AdminNav";
 import { SkeletonStats } from "@/components/Skeleton";
 
 export default function AdminDashboard() {
+  const [session, setSession] = useState<any>(null);
   const [stats, setStats] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    fetch("/api/admin/me")
+      .then(r => r.ok ? r.json() : null)
+      .then(setSession);
+
     fetch("/api/admin/stats")
       .then((r) => r.json())
       .then((data) => { setStats(data); setLoading(false); })
@@ -18,9 +23,9 @@ export default function AdminDashboard() {
 
   const cards = [
     { title: "Live Queue", desc: "Call and serve tickets.", href: "/admin/queue", emoji: "📋" },
-    { title: "Services",   desc: "Manage campus offices.",  href: "/admin/services", emoji: "🏢" },
-    { title: "Branding",   desc: "Name, logo & colors.",    href: "/admin/settings", emoji: "🎨" },
-  ];
+    { title: "Services",   desc: "Manage campus offices.",  href: "/admin/services", emoji: "🏢", superOnly: true },
+    { title: "Branding",   desc: "Name, logo & colors.",    href: "/admin/settings", emoji: "🎨", superOnly: true },
+  ].filter(c => !c.superOnly || session?.role === "SUPER_ADMIN");
 
   return (
     <div className="admin-container">
