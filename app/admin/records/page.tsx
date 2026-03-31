@@ -298,7 +298,7 @@ export default function RecordsPage() {
                   <thead>
                     <tr>
                       <th style={{ padding: "1.25rem", textAlign: "left" }}>#</th>
-                      <th style={{ padding: "1.25rem", textAlign: "left" }}>Student / Client</th>
+                      <th style={{ padding: "1.25rem", textAlign: "left" }}>User / Client</th>
                       <th style={{ padding: "1.25rem", textAlign: "center" }}>Status</th>
                       <th style={{ padding: "1.25rem", textAlign: "center" }}>Created</th>
                       <th style={{ padding: "1.25rem", textAlign: "right" }}>Actions</th>

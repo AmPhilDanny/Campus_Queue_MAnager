@@ -5,7 +5,7 @@ import AdminNav from "@/components/AdminNav";
 import { useToast } from "@/components/Toast";
 import { SkeletonList } from "@/components/Skeleton";
 
-export default function ManageServices() {
+export default function ManageOffices() {
   const [session, setSession] = useState<any>(null);
   const [services, setServices] = useState<any[]>([]);
   const [newName, setNewName] = useState("");
@@ -86,11 +86,11 @@ export default function ManageServices() {
         <main className="admin-main">
           <header className="admin-header">
             <h1>Access Denied</h1>
-            <p>Only Super Admins can manage campus offices and services.</p>
+            <p>Only Super Admins can manage institutional offices.</p>
           </header>
           <div className="card" style={{ textAlign: "center", padding: "4rem" }}>
             <p style={{ color: "var(--text-muted)", marginBottom: "1.5rem" }}>
-              You do not have permission to view or manage services.
+              You do not have permission to view or manage offices.
             </p>
             <a href="/admin/dashboard" className="btn btn-primary">Return to Dashboard</a>
           </div>
@@ -105,8 +105,8 @@ export default function ManageServices() {
 
       <main className="admin-main">
         <header className="admin-header">
-          <h1>Manage Services</h1>
-          <p>Add or configure campus offices for the queue.</p>
+          <h1>Manage Offices</h1>
+          <p>Add or configure institutional offices for the queue.</p>
         </header>
 
         {/* Add new */}
@@ -131,12 +131,12 @@ export default function ManageServices() {
 
         {/* List */}
         <div className="card">
-          <h3 style={{ marginBottom: "1.25rem" }}>Campus Offices</h3>
+          <h3 style={{ marginBottom: "1.25rem" }}>Offices</h3>
           {servicesLoading ? (
             <SkeletonList count={4} />
           ) : services.length === 0 ? (
             <p style={{ color: "var(--text-muted)", textAlign: "center", padding: "2rem 0" }}>
-              No services yet. Add one above.
+              No offices yet. Add one above.
             </p>
           ) : (
             <div>

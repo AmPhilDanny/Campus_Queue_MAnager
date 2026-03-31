@@ -1,7 +1,20 @@
+/**
+ * Admin Settings API
+ * 
+ * Handles reading and updating institutional settings (Branding, Footer, Theme).
+ * GET: Retrieves all settings (Super Admin only).
+ * POST: Updates settings with role-based restriction:
+ * - Super Admin: Can update ALL settings including Branding/Rename.
+ * - Admin: Can only update Templates, Notifications, and Webhooks.
+ */
+
 import { NextResponse } from "next/server";
 import prisma from "@/lib/db";
 import { getAdminSession } from "@/lib/admin-auth";
 
+/**
+ * GET: Fetch institutional settings
+ */
 export async function GET() {
   const session = await getAdminSession();
   if (!session || session.role !== "SUPER_ADMIN") {

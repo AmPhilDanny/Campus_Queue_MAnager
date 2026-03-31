@@ -16,20 +16,32 @@ Thank you for your patience.
 
 export default function AdminSettings() {
   const [settings, setSettings] = useState<any>({
-    campus_name: "",
+    campus_name: "FhinovaxSmartQM",
     primary_color: "#1e3a8a",
     secondary_color: "#ffffff",
-    logo_text: "CQM",
+    logo_text: "FSQM",
     logo_url: "",
     favicon_url: "",
     notification_template: DEFAULT_TEMPLATE,
     notification_enabled: "true",
     sms_webhook_url: "",
+    display_mode: "both",
+    font_family: "Inter",
+    footer_col1_title: "Quick Links",
+    footer_col1_links: "[]",
+    footer_col2_title: "Our Offices",
+    footer_col2_links: "[]",
+    footer_col3_title: "Resources",
+    footer_col3_links: "[]",
+    footer_col4_title: "Contact Us",
+    footer_address: "123 Smart Way, Business District",
+    footer_socials: "{}",
+    footer_copyright: "© 2026 FhinovaxSmartQM. All rights reserved.",
   });
   const [logoFile, setLogoFile] = useState<File | null>(null);
   const [faviconFile, setFaviconFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
-  const [activeTab, setActiveTab] = useState<"branding" | "templates" | "ai">("templates"); // Default to templates for safety
+  const [activeTab, setActiveTab] = useState<"branding" | "templates" | "footer" | "ai">("templates"); // Default to templates for safety
   const [session, setSession] = useState<any>(null);
   const [kbEntries, setKbEntries] = useState<any[]>([]);
   const [newKbEntry, setNewKbEntry] = useState({ content: "", source: "", category: "General" });
@@ -174,12 +186,12 @@ export default function AdminSettings() {
             </Link>
           </div>
           <h1>System Settings</h1>
-          <p>Customize university branding and notification templates.</p>
+          <p>Customize institutional branding and notification templates.</p>
         </header>
 
         {/* Tabs */}
-        <div style={{ display: "flex", gap: "0", marginBottom: "1.5rem", borderBottom: "2px solid var(--border)" }}>
-          {(["branding", "templates", "ai"] as const)
+        <div style={{ display: "flex", gap: "0", marginBottom: "1.5rem", borderBottom: "2px solid var(--border)", overflowX: "auto" }}>
+          {(["branding", "templates", "footer", "ai"] as const)
             .filter(tab => session?.role === "SUPER_ADMIN" || tab === "templates")
             .map((tab) => (
             <button
@@ -195,9 +207,10 @@ export default function AdminSettings() {
                 color: activeTab === tab ? "var(--primary)" : "var(--text-muted)",
                 borderBottom: activeTab === tab ? "2.5px solid var(--primary)" : "2.5px solid transparent",
                 marginBottom: "-2px",
+                whiteSpace: "nowrap",
               }}
             >
-              {tab === "branding" ? "🎨 Branding" : tab === "templates" ? "📝 Templates" : "🤖 AI Training"}
+              {tab === "branding" ? "🎨 Branding" : tab === "templates" ? "📝 Templates" : tab === "footer" ? "🦶 Footer" : "🤖 AI Training"}
             </button>
           ))}
         </div>
@@ -207,17 +220,23 @@ export default function AdminSettings() {
           {activeTab === "branding" && (
             <>
               <div className="card" style={{ marginBottom: "1.5rem" }}>
-                <h3 style={{ marginBottom: "1.25rem" }}>University Identity</h3>
+                <h3 style={{ marginBottom: "1.25rem" }}>Institutional Identity</h3>
 
                 <div className="form-group">
-                  <label>University / College Name</label>
+                  <label>Institution / Organization Name</label>
                   <input
                     type="text"
                     value={settings.campus_name}
                     onChange={(e) => set("campus_name", e.target.value)}
-                    placeholder="e.g. University of Lagos"
+                    placeholder="e.g. Fhinovax Solutions"
                     required
+                    disabled={session?.role !== "SUPER_ADMIN"}
                   />
+                  {session?.role !== "SUPER_ADMIN" && (
+                    <p style={{ fontSize: "0.75rem", color: "var(--text-muted)", marginTop: "0.3rem" }}>
+                      Only Super Admins can rename the institution.
+                    </p>
+                  )}
                 </div>
 
                 <div className="form-group">
@@ -226,8 +245,29 @@ export default function AdminSettings() {
                     type="text"
                     value={settings.logo_text}
                     onChange={(e) => set("logo_text", e.target.value)}
-                    placeholder="CQM"
+                    placeholder="FSQM"
                   />
+                </div>
+
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.5rem" }}>
+                  <div className="form-group">
+                    <label>Branding Display Mode</label>
+                    <select value={settings.display_mode} onChange={(e) => set("display_mode", e.target.value)}>
+                      <option value="both">Show Both (Logo & Name)</option>
+                      <option value="logo">Show Logo Only</option>
+                      <option value="name">Show Name Only</option>
+                    </select>
+                  </div>
+                  <div className="form-group">
+                    <label>App Typography</label>
+                    <select value={settings.font_family} onChange={(e) => set("font_family", e.target.value)}>
+                      <option value="Inter">Inter (Clean & Modern)</option>
+                      <option value="'Roboto', sans-serif">Roboto</option>
+                      <option value="'Montserrat', sans-serif">Montserrat</option>
+                      <option value="'Poppins', sans-serif">Poppins</option>
+                      <option value="'Open Sans', sans-serif">Open Sans</option>
+                    </select>
+                  </div>
                 </div>
 
                 <div className="form-group" style={{ maxWidth: "200px" }}>
@@ -245,7 +285,7 @@ export default function AdminSettings() {
                 </div>
 
                 <div className="form-group">
-                  <label>University Logo (Upload)</label>
+                  <label>Institution Logo (Upload)</label>
                   <input
                     type="file"
                     accept="image/*"
@@ -351,7 +391,7 @@ export default function AdminSettings() {
                     />
                   )}
                   <h4 style={{ color: settings.primary_color, margin: 0 }}>
-                    {settings.campus_name || "University Name"}
+                    {settings.campus_name || "Institution Name"}
                   </h4>
                   <button
                     type="button"
@@ -366,6 +406,63 @@ export default function AdminSettings() {
                   >
                     Sample Button
                   </button>
+                </div>
+              </div>
+            </>
+          )}
+
+          {/* ── FOOTER TAB ── */}
+          {activeTab === "footer" && (
+            <>
+              <div className="card" style={{ marginBottom: "1.5rem" }}>
+                <h3 style={{ marginBottom: "1.25rem" }}>Footer Columns</h3>
+                <p style={{ fontSize: "0.875rem", color: "var(--text-muted)", marginBottom: "1.5rem" }}>
+                  Configure the four columns of your website footer. Use JSON format for links (e.g., <code>{"[{\"label\":\"Link\",\"url\":\"/\"}]"}</code>).
+                </p>
+
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.5rem" }}>
+                  <div className="form-group">
+                    <label>Column 1: Title (e.g. Quick Links)</label>
+                    <input type="text" value={settings.footer_col1_title} onChange={(e) => set("footer_col1_title", e.target.value)} />
+                    <label style={{ marginTop: "0.75rem" }}>Column 1: Links (JSON)</label>
+                    <textarea value={settings.footer_col1_links} onChange={(e) => set("footer_col1_links", e.target.value)} rows={3} style={{ fontFamily: "monospace", fontSize: "0.8125rem" }} />
+                  </div>
+                  <div className="form-group">
+                    <label>Column 2: Title (e.g. Our Offices)</label>
+                    <input type="text" value={settings.footer_col2_title} onChange={(e) => set("footer_col2_title", e.target.value)} />
+                    <label style={{ marginTop: "0.75rem" }}>Column 2: Links (JSON)</label>
+                    <textarea value={settings.footer_col2_links} onChange={(e) => set("footer_col2_links", e.target.value)} rows={3} style={{ fontFamily: "monospace", fontSize: "0.8125rem" }} />
+                  </div>
+                  <div className="form-group">
+                    <label>Column 3: Title (e.g. Support)</label>
+                    <input type="text" value={settings.footer_col3_title} onChange={(e) => set("footer_col3_title", e.target.value)} />
+                    <label style={{ marginTop: "0.75rem" }}>Column 3: Links (JSON)</label>
+                    <textarea value={settings.footer_col3_links} onChange={(e) => set("footer_col3_links", e.target.value)} rows={3} style={{ fontFamily: "monospace", fontSize: "0.8125rem" }} />
+                  </div>
+                  <div className="form-group">
+                    <label>Column 4: Title (e.g. Contact Us)</label>
+                    <input type="text" value={settings.footer_col4_title} onChange={(e) => set("footer_col4_title", e.target.value)} />
+                    <label style={{ marginTop: "0.75rem" }}>Institution Address</label>
+                    <textarea value={settings.footer_address} onChange={(e) => set("footer_address", e.target.value)} rows={3} placeholder="Full address..." />
+                  </div>
+                </div>
+              </div>
+
+              <div className="card" style={{ marginBottom: "1.5rem" }}>
+                <h3 style={{ marginBottom: "1.25rem" }}>Social Links & Copyright</h3>
+                <div className="form-group">
+                  <label>Social Media URLs (JSON)</label>
+                  <textarea 
+                    value={settings.footer_socials} 
+                    onChange={(e) => set("footer_socials", e.target.value)} 
+                    rows={2} 
+                    style={{ fontFamily: "monospace", fontSize: "0.8125rem" }}
+                    placeholder='{"facebook":"#", "twitter":"#", "instagram":"#", "linkedin":"#"}'
+                  />
+                </div>
+                <div className="form-group" style={{ marginBottom: 0 }}>
+                  <label>Copyright Text</label>
+                  <input type="text" value={settings.footer_copyright} onChange={(e) => set("footer_copyright", e.target.value)} />
                 </div>
               </div>
             </>

@@ -1,3 +1,12 @@
+/**
+ * Landing Page Component
+ * 
+ * Provides the public-facing interface for institutional users:
+ * 1. Create a new digital ticket for a specific office.
+ * 2. Track an existing ticket using a ticket number and identifier.
+ * 3. Chat with an AI assistant for FAQ and guidance.
+ */
+
 "use client";
 
 import { useState, useEffect } from "react";
@@ -132,16 +141,18 @@ export default function Home() {
     <div className="container" style={{ "--primary": settings.primary_color || "#1e3a8a" } as any}>
       <div className="card">
         <header style={{ textAlign: "center", marginBottom: "2rem" }}>
-          {settings.logo_url && (
+          {settings.display_mode !== "name" && settings.logo_url && (
             <img
               src={settings.logo_url}
               alt="Logo"
               style={{ maxHeight: "90px", maxWidth: "180px", objectFit: "contain", marginBottom: "1rem" }}
             />
           )}
-          <h1 style={{ fontSize: "1.875rem", marginBottom: "0.4rem" }}>
-            {settings.campus_name || "Campus Queue Manager"}
-          </h1>
+          {settings.display_mode !== "logo" && (
+            <h1 style={{ fontSize: "1.875rem", marginBottom: "0.4rem" }}>
+              {settings.campus_name || "FhinovaxSmartQM"}
+            </h1>
+          )}
           <p style={{ color: "var(--text-muted)", fontSize: "1rem" }}>
             Skip the wait. Get your digital ticket now.
           </p>
@@ -224,7 +235,7 @@ export default function Home() {
         ) : activeTab === "new" ? (
           <form onSubmit={handleSubmit} style={{ animation: "fade-in 0.3s ease" }}>
             <div className="form-group">
-              <label htmlFor="service">Select Office / Service *</label>
+              <label htmlFor="service">Select Office *</label>
                 <select
                   id="service"
                   value={formData.serviceId || ""}
@@ -340,7 +351,7 @@ export default function Home() {
         )}
 
         <footer style={{ marginTop: "2rem", textAlign: "center", fontSize: "0.875rem", color: "var(--text-muted)" }}>
-          <p>© {new Date().getFullYear()} {settings.campus_name || "CQM"}</p>
+          <p>© {new Date().getFullYear()} {settings.campus_name || "FSQM"}</p>
           <a href="/admin/login" style={{ color: "var(--primary-light)", textDecoration: "none", marginTop: "0.25rem", display: "inline-block" }}>
             Admin Portal →
           </a>

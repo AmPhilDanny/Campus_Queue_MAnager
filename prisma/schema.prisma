@@ -1,3 +1,14 @@
+/**
+ * Prisma Schema for FhinovaxSmartQM
+ * 
+ * Defines the core data structure for institutional queue management:
+ * - Service (Office): Institutional departments that manage queues.
+ * - Queue: Daily queue instances for specific offices.
+ * - Ticket: User queue entries with status and metadata.
+ * - Admin: Role-based access control (SUPER_ADMIN, ADMIN).
+ * - Setting: Key-value store for branding, theme, and footer config.
+ */
+
 generator client {
   provider = "prisma-client-js"
 }

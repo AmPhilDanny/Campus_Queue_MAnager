@@ -127,7 +127,7 @@ export default function ManageQueue() {
       <main className="admin-main">
         <header className="admin-header">
           <h1>Manage Queue</h1>
-          <p>Call, serve, or skip student tickets in real time.</p>
+          <p>Call, serve, or skip tickets in real time.</p>
         </header>
 
         {/* Service selector + Export */}

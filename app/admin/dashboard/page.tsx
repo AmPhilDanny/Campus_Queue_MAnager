@@ -23,7 +23,7 @@ export default function AdminDashboard() {
 
   const cards = [
     { title: "Live Queue", desc: "Call and serve tickets.", href: "/admin/queue", emoji: "📋" },
-    { title: "Services",   desc: "Manage campus offices.",  href: "/admin/services", emoji: "🏢", superOnly: true },
+    { title: "Offices",    desc: "Manage institutional offices.",  href: "/admin/services", emoji: "🏢", superOnly: true },
     { title: "Branding",   desc: "Name, logo & colors.",    href: "/admin/settings", emoji: "🎨", superOnly: true },
   ].filter(c => !c.superOnly || session?.role === "SUPER_ADMIN");
 

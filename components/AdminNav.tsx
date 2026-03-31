@@ -7,12 +7,18 @@ import { usePathname } from "next/navigation";
 export default function AdminNav() {
   const pathname = usePathname();
   const [session, setSession] = useState<any>(null);
+  const [settings, setSettings] = useState<any>({});
 
   useEffect(() => {
     fetch("/api/admin/me")
       .then(r => r.ok ? r.json() : null)
       .then(data => setSession(data))
       .catch(() => setSession(null));
+
+    fetch("/api/settings")
+      .then(r => r.json())
+      .then(data => setSettings(data))
+      .catch(() => {});
   }, []);
 
   const isSuper = session?.role === "SUPER_ADMIN";
@@ -25,7 +31,7 @@ export default function AdminNav() {
 
   if (isSuper) {
     links.splice(2, 0,
-      { name: "Services",    href: "/admin/services" },
+      { name: "Offices",      href: "/admin/services" },
       { name: "Admins",      href: "/admin/users" },
       { name: "Form",        href: "/admin/form-management" },
       { name: "Records",     href: "/admin/records" }
@@ -37,23 +43,38 @@ export default function AdminNav() {
     window.location.href = "/admin/login";
   };
 
+  const brandText = settings.display_mode === "logo" ? (settings.logo_text || "FSQM") : (settings.campus_name || "FhinovaxSmartQM");
+
   return (
     <nav className="admin-nav">
       {/* Brand mark */}
-      <span
+      <div
         style={{
-          fontWeight: 800,
-          fontSize: "1rem",
-          color: "var(--primary)",
-          letterSpacing: "-0.02em",
-          marginRight: "0.5rem",
-          paddingRight: "0.75rem",
+          display: "flex",
+          alignItems: "center",
+          gap: "0.75rem",
+          marginRight: "1rem",
+          paddingRight: "1rem",
           borderRight: "1.5px solid var(--border)",
           whiteSpace: "nowrap",
         }}
       >
-        🏫 CQM Admin
-      </span>
+        {settings.display_mode !== "name" && settings.logo_url && (
+          <img src={settings.logo_url} alt="Logo" style={{ height: "24px", width: "auto", objectFit: "contain" }} />
+        )}
+        {settings.display_mode !== "logo" && (
+          <span
+            style={{
+              fontWeight: 800,
+              fontSize: "0.9375rem",
+              color: "var(--primary)",
+              letterSpacing: "-0.02em",
+            }}
+          >
+            {brandText} Admin
+          </span>
+        )}
+      </div>
 
       {links.map((link) => (
         <Link

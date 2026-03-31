@@ -211,7 +211,7 @@ export default function AdminUsersPage() {
               <div className="form-group">
                 <label>Role</label>
                 <select value={formData.role} onChange={e => setFormData({...formData, role: e.target.value})}>
-                  <option value="ADMIN">Office Admin (Lower)</option>
+                  <option value="ADMIN">Institutional Admin (Lower)</option>
                   <option value="SUPER_ADMIN">Super Admin</option>
                 </select>
               </div>
