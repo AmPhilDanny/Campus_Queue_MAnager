@@ -1,3 +1,13 @@
+/**
+ * Queue History & Records Page
+ * 
+ * Historical data management (Super Admin):
+ * - View daily queue summaries for all offices.
+ * - Drildown into individual tickets and timestamps.
+ * - Export records to CSV for auditing.
+ * - Cleanup/Prune old data.
+ */
+
 "use client";
 
 import { useState, useEffect } from "react";

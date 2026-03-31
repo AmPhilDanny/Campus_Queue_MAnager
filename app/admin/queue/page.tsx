@@ -1,3 +1,14 @@
+/**
+ * Manage Queue Page
+ * 
+ * Real-time operational interface for call center / office staff:
+ * - Select an office to manage.
+ * - Call the next ticket in line.
+ * - Serve, skip, or recall tickets.
+ * - Manually override wait times.
+ * - Export daily queue data to CSV.
+ */
+
 "use client";
 
 import { useState, useEffect } from "react";

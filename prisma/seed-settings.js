@@ -1,3 +1,13 @@
+/**
+ * Institutional Settings Seed Data
+ * 
+ * Initializes the database with FhinovaxSmartQM (FSQM) defaults:
+ * - Branding & Logos
+ * - Theme Configuration
+ * - Typography
+ * - Footer Layout & Links
+ */
+
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 

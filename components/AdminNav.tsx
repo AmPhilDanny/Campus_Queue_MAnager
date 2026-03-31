@@ -1,3 +1,13 @@
+/**
+ * Admin Navigation Component
+ * 
+ * Persistent navigation sidebar for administrative interfaces.
+ * Features:
+ * - Dynamic role-based links (Super Admin vs. Admin).
+ * - Branding integration (Logo and Name based on settings).
+ * - Active state tracking across admin routes.
+ */
+
 "use client";
 
 import { useState, useEffect } from "react";

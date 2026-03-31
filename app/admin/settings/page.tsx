@@ -1,3 +1,15 @@
+/**
+ * Admin Settings Page
+ * 
+ * Central hub for system configuration, branding, and institutional customization.
+ * Features:
+ * - Institutional Branding (Name, Logo, Favicon, Colors, Typography).
+ * - Layout Customization (Logo/Name display modes).
+ * - Footer Configuration (4 columns, Social Links, Copyright).
+ * - Notification Templates (SMS/Webhook integrations).
+ * - AI Chatbot Training (Knowledge Base management).
+ */
+
 "use client";
 
 import { useState, useEffect, useRef } from "react";
@@ -5,6 +17,9 @@ import Link from "next/link";
 import AdminNav from "@/components/AdminNav";
 import { useToast } from "@/components/Toast";
 
+/**
+ * Standard notification template used when no custom template is defined.
+ */
 const DEFAULT_TEMPLATE = `Hello {customerName},
 
 Your ticket #{ticketNumber} for {service} has been received.

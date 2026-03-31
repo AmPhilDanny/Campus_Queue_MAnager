@@ -1,3 +1,12 @@
+/**
+ * Manage Offices Page (renamed from Services)
+ * 
+ * Central control for institutional offices:
+ * - Create, update, and delete service points.
+ * - Manage custom form fields per office.
+ * - Toggle queue visibility and status.
+ */
+
 "use client";
 
 import { useState, useEffect } from "react";

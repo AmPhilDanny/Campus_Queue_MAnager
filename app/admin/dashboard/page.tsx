@@ -1,3 +1,12 @@
+/**
+ * Admin Dashboard Page
+ * 
+ * Overview for administrators:
+ * - Quick access to key modules (Queue, Offices, Admins, Records).
+ * - Real-time statistics summaries.
+ * - System health and usage overview.
+ */
+
 "use client";
 
 import Link from "next/link";

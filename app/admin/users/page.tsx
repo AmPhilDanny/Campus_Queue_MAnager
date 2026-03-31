@@ -1,3 +1,12 @@
+/**
+ * Admin User Management Page
+ * 
+ * Restricted to SUPER_ADMIN:
+ * - Create new administrator accounts.
+ * - Assign admins to specific institutional offices.
+ * - Manage and delete administrative roles.
+ */
+
 "use client";
 
 import { useState, useEffect } from "react";

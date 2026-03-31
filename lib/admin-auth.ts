@@ -1,3 +1,12 @@
+/**
+ * Admin Authentication & Session Utility
+ * 
+ * Provides centralized logic for:
+ * - JWT cookie management (creation and deletion).
+ * - Middleware-based authentication checks.
+ * - Role-based session retrieval (Admin vs. Super Admin).
+ */
+
 import { cookies } from "next/headers";
 
 export interface AdminSession {

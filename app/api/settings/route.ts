@@ -1,3 +1,10 @@
+/**
+ * Public Settings API
+ * 
+ * Fetches institutional branding and theme configurations 
+ * for the public-facing landing page and layout.
+ */
+
 import { NextResponse } from "next/server";
 import prisma from "@/lib/db";
 

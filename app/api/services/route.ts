@@ -1,3 +1,10 @@
+/**
+ * Public Services (Offices) API
+ * 
+ * Fetches the list of active institutional offices for the landing page.
+ * Returns only necessary metadata for user selection.
+ */
+
 import { NextResponse } from "next/server";
 import prisma from "@/lib/db";
 

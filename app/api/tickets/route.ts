@@ -1,3 +1,13 @@
+/**
+ * Public Tickets API
+ * 
+ * Main entry point for users to join the queue:
+ * - Validates office existence and status.
+ * - Handles custom form data submission.
+ * - Generates unique ticket numbers and stores customer info.
+ * - Sends automated notifications (if enabled).
+ */
+
 import { NextResponse } from "next/server";
 import { createTicket } from "@/lib/queue-logic";
 
