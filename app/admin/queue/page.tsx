@@ -175,7 +175,7 @@ export default function ManageQueue() {
                 disabled={exporting}
                 className="btn"
                 style={{
-                  background: "#f0fdf4", color: "#166534", border: "1px solid #bbf7d0",
+                  background: "var(--success)", opacity: 0.8, color: "#fff", border: "1px solid var(--border)",
                   fontSize: "0.9375rem", padding: "0.75rem 1.25rem", whiteSpace: "nowrap",
                 }}
               >
@@ -192,9 +192,10 @@ export default function ManageQueue() {
                 style={{ 
                   padding: "0.4rem 1rem", 
                   fontSize: "0.875rem",
-                  background: queueData?.isOpen ? "#dcfce7" : "#fee2e2",
-                  color: queueData?.isOpen ? "#166534" : "#991b1b",
-                  border: `1px solid ${queueData?.isOpen ? '#bbf7d0' : '#fecaca'}`,
+                  background: queueData?.isOpen ? "var(--success)" : "var(--error)",
+                  opacity: 0.9,
+                  color: "#fff",
+                  border: `1px solid var(--border)`,
                 }}
               >
                 {queueData?.isOpen ? "● Open (Accepting Tickets)" : "○ Closed (Status Only)"}
@@ -308,9 +309,10 @@ export default function ManageQueue() {
                         justifyContent: "space-between",
                         alignItems: "flex-start",
                         padding: "1rem",
-                        background: "#f8fafc",
+                        background: "var(--card-bg-light)",
                         borderRadius: "10px",
                         gap: "1rem",
+                        border: "1px solid var(--border)",
                       }}
                     >
                       <div style={{ flex: 1, minWidth: 0 }}>
@@ -332,7 +334,7 @@ export default function ManageQueue() {
                               marginTop: "0.5rem",
                               fontSize: "0.875rem",
                               fontStyle: "italic",
-                              background: "#fff",
+                              background: "var(--card-bg)",
                               padding: "0.5rem 0.75rem",
                               borderRadius: "6px",
                               border: "1px solid var(--border)",
@@ -353,7 +355,7 @@ export default function ManageQueue() {
                           <button
                             onClick={() => handleManualWait(t.id)}
                             className="btn"
-                            style={{ background: "#f1f5f9", color: "#475569", fontSize: "0.8125rem", padding: "0.5rem 0.875rem" }}
+                            style={{ background: "var(--secondary)", color: "var(--text-main)", fontSize: "0.8125rem", padding: "0.5rem 0.875rem" }}
                           >
                             ⏱ Edit Wait
                           </button>
@@ -363,14 +365,14 @@ export default function ManageQueue() {
                             <button
                               onClick={() => handleAction("serve", t.id)}
                               className="btn"
-                              style={{ background: "#dcfce7", color: "#14532d", fontSize: "0.8125rem", padding: "0.5rem 0.875rem" }}
+                              style={{ background: "var(--success)", color: "#fff", fontSize: "0.8125rem", padding: "0.5rem 0.875rem", opacity: 0.9 }}
                             >
                               ✓ Serve
                             </button>
                             <button
                               onClick={() => handleAction("skip", t.id)}
                               className="btn"
-                              style={{ background: "#fee2e2", color: "#7f1d1d", fontSize: "0.8125rem", padding: "0.5rem 0.875rem" }}
+                              style={{ background: "var(--error)", color: "#fff", fontSize: "0.8125rem", padding: "0.5rem 0.875rem", opacity: 0.9 }}
                             >
                               ✕ Skip
                             </button>
@@ -380,7 +382,7 @@ export default function ManageQueue() {
                           <button
                             onClick={() => handleAction("recall", t.id)}
                             className="btn"
-                            style={{ background: "#fef9c3", color: "#713f12", fontSize: "0.8125rem", padding: "0.5rem 0.875rem" }}
+                            style={{ background: "var(--warning)", color: "#fff", fontSize: "0.8125rem", padding: "0.5rem 0.875rem", opacity: 0.9 }}
                           >
                             ↩ Recall
                           </button>

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import ThemeToggle from "@/components/ThemeToggle";
 
 export default function AdminLogin() {
   const [email, setEmail] = useState("");
@@ -25,7 +26,10 @@ export default function AdminLogin() {
   };
 
   return (
-    <div className="container">
+    <div className="container" style={{ position: "relative" }}>
+      <div style={{ position: "absolute", top: "1.5rem", right: "1.5rem", zIndex: 10 }}>
+        <ThemeToggle />
+      </div>
       <div className="card" style={{ maxWidth: "420px", margin: "2rem auto" }}>
         <div style={{ textAlign: "center", marginBottom: "1.5rem" }}>
           <div style={{ fontSize: "2.5rem", marginBottom: "0.5rem" }}>🏫</div>
@@ -37,7 +41,7 @@ export default function AdminLogin() {
 
         {error && (
           <div style={{
-            background: "#fee2e2", color: "#991b1b", padding: "0.875rem 1rem",
+            background: "var(--error)", color: "#fff", padding: "0.875rem 1rem",
             borderRadius: "10px", marginBottom: "1.25rem", textAlign: "center",
             fontSize: "0.9375rem", fontWeight: 500,
           }}>
@@ -78,12 +82,12 @@ export default function AdminLogin() {
           style={{
             marginTop: "1.75rem",
             padding: "1rem 1.25rem",
-            background: "linear-gradient(135deg, #eff6ff, #dbeafe)",
+            background: "var(--card-bg-light)",
             borderRadius: "10px",
-            border: "1px solid #bfdbfe",
+            border: "1px solid var(--border)",
           }}
         >
-          <p style={{ fontWeight: 700, fontSize: "0.875rem", color: "#1e3a8a", marginBottom: "0.625rem" }}>
+          <p style={{ fontWeight: 700, fontSize: "0.875rem", color: "var(--primary)", marginBottom: "0.625rem" }}>
             🔑 Demo Credentials
           </p>
           <div style={{ display: "flex", flexDirection: "column", gap: "0.35rem" }}>
@@ -93,7 +97,7 @@ export default function AdminLogin() {
                 type="button"
                 onClick={() => setEmail("admin@cqm.edu")}
                 style={{
-                  background: "#fff", border: "1px solid #bfdbfe", color: "#1d4ed8",
+                  background: "var(--card-bg)", border: "1px solid var(--border)", color: "var(--primary)",
                   fontFamily: "monospace", cursor: "pointer", padding: "0.2rem 0.6rem",
                   borderRadius: "6px", fontSize: "0.8125rem", fontWeight: 600,
                 }}
@@ -107,7 +111,7 @@ export default function AdminLogin() {
                 type="button"
                 onClick={() => setPassword("password123")}
                 style={{
-                  background: "#fff", border: "1px solid #bfdbfe", color: "#1d4ed8",
+                  background: "var(--card-bg)", border: "1px solid var(--border)", color: "var(--primary)",
                   fontFamily: "monospace", cursor: "pointer", padding: "0.2rem 0.6rem",
                   borderRadius: "6px", fontSize: "0.8125rem", fontWeight: 600,
                 }}

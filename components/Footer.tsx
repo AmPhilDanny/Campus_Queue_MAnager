@@ -30,7 +30,7 @@ export default function Footer({ settings }: FooterProps) {
   const primaryColor = settings.primary_color || "#1e3a8a";
 
   return (
-    <footer className="site-footer" style={{ borderTop: "1px solid var(--border)", background: "#fff", marginTop: "4rem" }}>
+    <footer className="site-footer" style={{ borderTop: "1px solid var(--border)", background: "var(--card-bg)", marginTop: "4rem" }}>
       <div className="footer-container" style={{ maxWidth: "1200px", margin: "0 auto", padding: "4rem 2rem" }}>
         <div className="footer-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "3rem" }}>
           

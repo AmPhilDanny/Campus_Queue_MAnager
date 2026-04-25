@@ -160,7 +160,7 @@ export default function RecordsPage() {
   };
 
   return (
-    <div className="admin-container" style={{ maxWidth: "1200px", background: "linear-gradient(180deg, #f8fafc 0%, #eff6ff 100%)", borderRadius: "24px", marginTop: "1rem", boxShadow: "0 4px 20px rgba(0,0,0,0.03)" }}>
+    <div className="admin-container" style={{ maxWidth: "1200px", background: "var(--bg-app)", borderRadius: "24px", marginTop: "1rem", boxShadow: "var(--shadow)" }}>
       <AdminNav />
       <main className="admin-main">
         <header style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "2rem" }}>
@@ -173,7 +173,7 @@ export default function RecordsPage() {
             <h1 style={{ fontSize: "1.5rem" }}>Queue History & Records</h1>
             <p style={{ color: "var(--text-muted)" }}>View, export, and manage historical queue data.</p>
           </div>
-          <button className="btn btn-ghost" onClick={handleDeleteBefore} style={{ color: "var(--error)", border: "1px solid #fee2e2" }}>
+          <button className="btn btn-ghost" onClick={handleDeleteBefore} style={{ color: "var(--error)", border: "1px solid var(--error)", opacity: 0.8 }}>
             <Trash2 size={18} style={{ marginRight: "0.5rem" }} />
             Cleanup Old Data
           </button>
@@ -210,7 +210,7 @@ export default function RecordsPage() {
         ) : (
           <div className="card" style={{ padding: 0, overflow: "hidden" }}>
             <table className="admin-table" style={{ width: "100%", borderCollapse: "collapse" }}>
-              <thead style={{ background: "rgba(255,255,255,0.05)" }}>
+              <thead style={{ background: "var(--card-bg-light)" }}>
                 <tr>
                   <th style={{ padding: "1rem", textAlign: "left" }}>Date</th>
                   <th style={{ padding: "1rem", textAlign: "left" }}>Office</th>
@@ -221,7 +221,7 @@ export default function RecordsPage() {
               </thead>
               <tbody>
                 {queues.map((q) => (
-                  <tr key={q.id} style={{ borderTop: "1px solid rgba(255,255,255,0.1)" }}>
+                  <tr key={q.id} style={{ borderTop: "1px solid var(--border)" }}>
                     <td style={{ padding: "1rem", fontWeight: 600 }}>{q.date}</td>
                     <td style={{ padding: "1rem" }}>{q.service.name}</td>
                     <td style={{ padding: "1rem", textAlign: "center" }}>
@@ -270,13 +270,13 @@ export default function RecordsPage() {
             <div className="modal-content-styled" style={{ maxWidth: "900px", width: "95%", maxHeight: "90vh", overflowY: "auto" }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "2rem" }}>
                 <div>
-                  <h2 style={{ marginBottom: "0.25rem", color: "white" }}>{selectedQueue.service.name}</h2>
-                  <p style={{ color: "rgba(255,255,255,0.7)" }}>Records for {selectedQueue.date}</p>
+                  <h2 style={{ marginBottom: "0.25rem", color: "var(--primary)" }}>{selectedQueue.service.name}</h2>
+                  <p style={{ color: "var(--text-muted)" }}>Records for {selectedQueue.date}</p>
                 </div>
                 <button 
                   className="btn-close" 
                   onClick={() => setSelectedQueue(null)}
-                  style={{ background: "rgba(255,255,255,0.1)", color: "white", border: "1px solid rgba(255,255,255,0.2)", borderRadius: "12px", padding: "0.5rem" }}
+                  style={{ background: "var(--card-bg-light)", color: "var(--text-main)", border: "1px solid var(--border)", borderRadius: "12px", padding: "0.5rem" }}
                 >
                   <X size={24} />
                 </button>
@@ -375,43 +375,45 @@ export default function RecordsPage() {
         }
         .modal-content-styled {
           width: 100%;
-          background: #1e293b;
+          background: var(--modal-bg);
           border-radius: 24px;
           padding: 2.5rem;
-          box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-          border: 1px solid rgba(255, 255, 255, 0.1);
+          box-shadow: var(--shadow);
+          border: 1px solid var(--border);
         }
         .stat-card {
           flex: 1;
           min-width: 180px;
-          background: white;
+          background: var(--card-bg);
           padding: 1.5rem;
           border-radius: 20px;
           text-align: center;
-          box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+          box-shadow: var(--shadow);
+          border: 1px solid var(--border);
         }
         .table-container {
-          background: white;
+          background: var(--card-bg);
           border-radius: 24px;
           overflow: hidden;
-          box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+          box-shadow: var(--shadow);
+          border: 1px solid var(--border);
         }
         .admin-table-styled thead {
-          background: #f8fafc;
-          border-bottom: 1px solid #e2e8f0;
+          background: var(--card-bg-light);
+          border-bottom: 1px solid var(--border);
         }
         .admin-table-styled th {
           font-size: 0.8125rem;
           font-weight: 700;
-          color: #64748b;
+          color: var(--text-muted);
           text-transform: uppercase;
           letter-spacing: 0.05em;
         }
         .admin-table-styled tr:not(:last-child) {
-          border-bottom: 1px solid #f1f5f9;
+          border-bottom: 1px solid var(--border);
         }
         .admin-table-styled tr:hover {
-          background: #fcfdfe;
+          background: var(--nav-hover);
         }
         .badge {
           padding: 0.4rem 0.875rem;
@@ -425,8 +427,9 @@ export default function RecordsPage() {
         .badge-secondary { background: #dbeafe; color: #1e40af; }
         .badge-error { background: #fee2e2; color: #991b1b; }
         .btn-action-delete {
-          background: #fee2e2;
-          color: #ef4444;
+          background: var(--error);
+          opacity: 0.8;
+          color: white;
           border: none;
           padding: 0.6rem;
           border-radius: 12px;

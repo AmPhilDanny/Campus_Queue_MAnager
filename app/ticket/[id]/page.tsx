@@ -3,6 +3,8 @@
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import { SkeletonText, SkeletonBlock } from "@/components/Skeleton";
+import ThemeToggle from "@/components/ThemeToggle";
+import Link from "next/link";
 
 export default function TicketStatus() {
   const { id } = useParams();
@@ -91,7 +93,10 @@ export default function TicketStatus() {
   const eta = isManualWait ? ticket.manualWaitTime : (ticket.position * waitPerPersonMs / 60000);
 
   return (
-    <div className="container" style={{ "--primary": primaryColor } as any}>
+    <div className="container" style={{ "--brand-primary": primaryColor, position: "relative" } as any}>
+      <div style={{ position: "absolute", top: "1.5rem", right: "1.5rem", zIndex: 10 }}>
+        <ThemeToggle />
+      </div>
       <div
         className="card"
         style={{
@@ -203,7 +208,7 @@ export default function TicketStatus() {
         {/* Student Details */}
         <div
           style={{
-            background: "#f8fafc",
+            background: "var(--card-bg-light)",
             padding: "1.25rem",
             borderRadius: "10px",
             marginBottom: "1.25rem",
@@ -237,7 +242,7 @@ export default function TicketStatus() {
         {!isCompleted && (
           <div
             style={{
-              background: "#f8fafc",
+              background: "var(--card-bg-light)",
               padding: "1rem",
               borderRadius: "10px",
               marginBottom: "1.75rem",
@@ -262,7 +267,7 @@ export default function TicketStatus() {
           <button
             onClick={() => window.print()}
             className="btn"
-            style={{ background: "#f1f5f9", color: "var(--text-main)", fontSize: "0.9375rem" }}
+            style={{ background: "var(--card-bg-light)", color: "var(--text-main)", fontSize: "0.9375rem" }}
           >
             🖨 Print Ticket
           </button>

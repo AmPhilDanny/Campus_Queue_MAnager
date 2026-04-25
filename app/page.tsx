@@ -15,6 +15,7 @@ import { useRouter } from "next/navigation";
 import { useToast } from "@/components/Toast";
 import { SkeletonText, SkeletonBlock } from "@/components/Skeleton";
 import AIChat from "@/components/AIChat";
+import ThemeToggle from "@/components/ThemeToggle";
 
 export default function Home() {
   const [services, setServices] = useState<any[]>([]);
@@ -138,7 +139,10 @@ export default function Home() {
   };
 
   return (
-    <div className="container" style={{ "--primary": settings.primary_color || "#1e3a8a" } as any}>
+    <div className="container" style={{ "--brand-primary": settings.primary_color || "#1e3a8a", position: 'relative' } as any}>
+      <div style={{ position: 'absolute', top: '1.5rem', right: '1.5rem', zIndex: 10 }}>
+        <ThemeToggle />
+      </div>
       <div className="card">
         <header style={{ textAlign: "center", marginBottom: "2rem" }}>
           {settings.display_mode !== "name" && settings.logo_url && (

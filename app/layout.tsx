@@ -13,6 +13,7 @@
 import "./globals.css";
 import { Inter } from "next/font/google";
 import { ToastProvider } from "@/components/Toast";
+import { ThemeProvider } from "@/components/ThemeContext";
 import Footer from "@/components/Footer";
 import type { Metadata } from "next";
 import prisma from "@/lib/db";
@@ -70,20 +71,22 @@ export default async function RootLayout({
         className={fontFamily === "Inter" ? inter.className : ""}
         style={{ 
           // Inject brand variables into the CSS scope
-          "--primary": primaryColor,
+          "--brand-primary": primaryColor,
           "--font-family": fontFamily
         } as any}
       >
-        <ToastProvider>
-          {/* Main application container with sticky footer flexbox pattern */}
-          <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
-            <div style={{ flex: 1 }}>
-              {children}
+        <ThemeProvider>
+          <ToastProvider>
+            {/* Main application container with sticky footer flexbox pattern */}
+            <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
+              <div style={{ flex: 1 }}>
+                {children}
+              </div>
+              {/* Customizable footer shown on all pages */}
+              <Footer settings={settings} />
             </div>
-            {/* Customizable footer shown on all pages */}
-            <Footer settings={settings} />
-          </div>
-        </ToastProvider>
+          </ToastProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

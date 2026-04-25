@@ -128,14 +128,14 @@ export default function AIChat({ settings }: { settings: any }) {
               right: isMobile ? "0" : "2rem",
               width: isMobile ? "100%" : "380px",
               height: isMobile ? "100%" : "550px",
-              background: "white",
+              background: "var(--chat-bg)",
               borderRadius: isMobile ? "0" : "20px",
-              boxShadow: "0 20px 50px -10px rgba(0,0,0,0.15)",
+              boxShadow: "var(--shadow)",
               display: "flex",
               flexDirection: "column",
               overflow: "hidden",
               zIndex: 1000,
-              border: isMobile ? "none" : "1px solid #e2e8f0",
+              border: isMobile ? "none" : "1px solid var(--border)",
             }}
           >
             {/* Header */}
@@ -177,13 +177,13 @@ export default function AIChat({ settings }: { settings: any }) {
                 display: "flex",
                 flexDirection: "column",
                 gap: "0.75rem",
-                background: "#f8fafc",
+                background: "var(--chat-muted)",
               }}
             >
               {messages.length === 0 && (
-                <div style={{ textAlign: "center", padding: "2rem 1rem", color: "#64748b" }}>
+                <div style={{ textAlign: "center", padding: "2rem 1rem", color: "var(--text-muted)" }}>
                   <div style={{ fontSize: "2rem", marginBottom: "0.5rem" }}>👋</div>
-                  <p style={{ fontSize: "0.875rem", fontWeight: 600, color: "#1e293b", marginBottom: "0.25rem" }}>
+                  <p style={{ fontSize: "0.875rem", fontWeight: 600, color: "var(--text-main)", marginBottom: "0.25rem" }}>
                     How can I help you?
                   </p>
                   <p style={{ fontSize: "0.8125rem" }}>
@@ -202,7 +202,7 @@ export default function AIChat({ settings }: { settings: any }) {
                   }}
                 >
                   {m.role === "model" && (
-                    <div style={{ width: "28px", height: "28px", background: "#e2e8f0", borderRadius: "14px", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                    <div style={{ width: "28px", height: "28px", background: "var(--card-bg-light)", borderRadius: "14px", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
                       <Bot size={14} color={primaryColor} />
                     </div>
                   )}
@@ -211,11 +211,11 @@ export default function AIChat({ settings }: { settings: any }) {
                       maxWidth: "80%",
                       padding: "0.75rem 1rem",
                       borderRadius: m.role === "user" ? "18px 18px 2px 18px" : "18px 18px 18px 2px",
-                      background: m.role === "user" ? primaryColor : "white",
-                      color: m.role === "user" ? "white" : "#1e293b",
+                      background: m.role === "user" ? primaryColor : "var(--card-bg)",
+                      color: m.role === "user" ? "white" : "var(--text-main)",
                       fontSize: "0.875rem",
-                      boxShadow: m.role === "model" ? "0 2px 5px rgba(0,0,0,0.05)" : "none",
-                      border: m.role === "model" ? "1px solid #e2e8f0" : "none",
+                      boxShadow: m.role === "model" ? "var(--shadow)" : "none",
+                      border: m.role === "model" ? "1px solid var(--border)" : "none",
                       whiteSpace: "pre-wrap",
                     }}
                   >
@@ -225,11 +225,11 @@ export default function AIChat({ settings }: { settings: any }) {
               ))}
               {loading && (
                 <div style={{ display: "flex", gap: "0.5rem" }}>
-                  <div style={{ width: "28px", height: "28px", background: "#e2e8f0", borderRadius: "14px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <div style={{ width: "28px", height: "28px", background: "var(--card-bg-light)", borderRadius: "14px", display: "flex", alignItems: "center", justifyContent: "center" }}>
                     <Bot size={14} color={primaryColor} />
                   </div>
-                  <div style={{ padding: "0.75rem 1rem", borderRadius: "18px 18px 18px 2px", background: "white", border: "1px solid #e2e8f0" }}>
-                    <Loader2 size={16} className="animate-spin" color="#64748b" />
+                  <div style={{ padding: "0.75rem 1rem", borderRadius: "18px 18px 18px 2px", background: "var(--card-bg)", border: "1px solid var(--border)" }}>
+                    <Loader2 size={16} className="animate-spin" color="var(--text-muted)" />
                   </div>
                 </div>
               )}
@@ -241,8 +241,8 @@ export default function AIChat({ settings }: { settings: any }) {
               style={{
                 padding: "1rem",
                 paddingBottom: isMobile ? "calc(env(safe-area-inset-bottom, 1rem) + 0.5rem)" : "1rem",
-                background: "white",
-                borderTop: "1px solid #e2e8f0",
+                background: "var(--chat-bg)",
+                borderTop: "1px solid var(--border)",
                 display: "flex",
                 gap: "0.5rem",
               }}
@@ -256,7 +256,9 @@ export default function AIChat({ settings }: { settings: any }) {
                   flex: 1,
                   padding: "0.6rem 1rem",
                   borderRadius: "20px",
-                  border: "1px solid #e2e8f0",
+                  border: "1px solid var(--border)",
+                  background: "var(--input-bg)",
+                  color: "var(--text-main)",
                   fontSize: "0.875rem",
                   outline: "none",
                 }}
@@ -268,8 +270,8 @@ export default function AIChat({ settings }: { settings: any }) {
                   width: "40px",
                   height: "40px",
                   borderRadius: "20px",
-                  background: input.trim() ? primaryColor : "#f1f5f9",
-                  color: input.trim() ? "white" : "#94a3b8",
+                  background: input.trim() ? primaryColor : "var(--card-bg-light)",
+                  color: input.trim() ? "white" : "var(--text-muted)",
                   border: "none",
                   cursor: input.trim() ? "pointer" : "default",
                   display: "flex",

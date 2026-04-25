@@ -13,6 +13,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import ThemeToggle from "./ThemeToggle";
 
 export default function AdminNav() {
   const pathname = usePathname();
@@ -96,8 +97,10 @@ export default function AdminNav() {
         </Link>
       ))}
 
-      <button
-        onClick={handleSignOut}
+      <div style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: "0.75rem" }}>
+        <ThemeToggle />
+        <button
+          onClick={handleSignOut}
         style={{
           marginLeft: "auto",
           background: "none",
@@ -117,6 +120,7 @@ export default function AdminNav() {
       >
         ⏻ Sign Out
       </button>
+      </div>
     </nav>
   );
 }

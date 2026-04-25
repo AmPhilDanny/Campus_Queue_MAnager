@@ -3,7 +3,7 @@
    ============================================================ */
 
 :root {
-  --primary:        #1e40af;       /* University Deep Blue */
+  --primary:        var(--brand-primary, #1e40af);       /* University Deep Blue */
   --primary-light:  #60a5fa;
   --primary-hover:  #1d4ed8;
   --secondary:      #f1f5f9;
@@ -16,9 +16,36 @@
   --card-bg:        #ffffff;
   --card-bg-light:  #f1f5f9;
   --border:         #e2e8f0;       /* Slate 200 */
+  --input-bg:       #ffffff;
+  --chat-bg:        #ffffff;
+  --chat-muted:     #f8fafc;
+  --modal-bg:       #ffffff;
   --radius:         16px;          /* Softer corners */
   --shadow:         0 10px 15px -3px rgb(0 0 0 / 0.05), 0 4px 6px -4px rgb(0 0 0 / 0.05);
   --font-sans:      'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+  --nav-hover:      #eff6ff;
+}
+
+[data-theme='dark'] {
+  --primary:        #60a5fa;       /* Lighter blue for dark mode */
+  --primary-light:  #3b82f6;
+  --primary-hover:  #93c5fd;
+  --secondary:      #1e293b;
+  --success:        #10b981;
+  --error:          #fb7185;
+  --warning:        #fbbf24;
+  --text-main:      #f8fafc;       /* Slate 50 */
+  --text-muted:     #94a3b8;       /* Slate 400 */
+  --bg-app:         #0f172a;       /* Slate 900 */
+  --card-bg:        #1e293b;       /* Slate 800 */
+  --card-bg-light:  #334155;       /* Slate 700 */
+  --border:         #334155;       /* Slate 700 */
+  --input-bg:       #0f172a;
+  --chat-bg:        #1e293b;
+  --chat-muted:     #0f172a;
+  --modal-bg:       #1e293b;
+  --shadow:         0 10px 15px -3px rgb(0 0 0 / 0.3), 0 4px 6px -4px rgb(0 0 0 / 0.3);
+  --nav-hover:      #1e293b;
 }
 
 /* ---- Reset ---- */
@@ -49,7 +76,7 @@ body {
   border-radius: var(--radius);
   padding: 2rem;
   box-shadow: var(--shadow);
-  border: 1px solid rgba(203, 213, 225, 0.6);
+  border: 1px solid var(--border);
 }
 
 /* ---- Typography ---- */
@@ -108,7 +135,7 @@ input, select, textarea {
   font-size: 1rem;
   font-family: var(--font-sans);
   color: var(--text-main);
-  background: #fff;
+  background: var(--input-bg);
   outline: none;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
@@ -202,9 +229,9 @@ input::placeholder, textarea::placeholder { color: #94a3b8; }
   color: var(--text-muted);
   white-space: nowrap;
 }
-.admin-nav-link:hover { background: #eff6ff; color: var(--primary); }
+.admin-nav-link:hover { background: var(--nav-hover); color: var(--primary); }
 .admin-nav-link.active {
-  background: #eff6ff;
+  background: var(--nav-hover);
   color: var(--primary);
   font-weight: 700;
 }
@@ -274,12 +301,39 @@ input::placeholder, textarea::placeholder { color: #94a3b8; }
   bottom: 0;
   left: 0; right: 0;
   padding: 0.875rem 1rem;
-  background: rgba(255,255,255,0.96);
+  background: var(--bg-app);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-top: 1px solid var(--border);
   z-index: 100;
   box-shadow: 0 -4px 12px rgba(0,0,0,0.06);
+}
+
+/* ---- Theme Toggle Button ---- */
+.theme-toggle-btn {
+  background: var(--card-bg-light);
+  border: 1px solid var(--border);
+  color: var(--text-main);
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  overflow: hidden;
+  position: relative;
+}
+
+.theme-toggle-btn:hover {
+  background: var(--nav-hover);
+  transform: translateY(-1px);
+  border-color: var(--primary-light);
+}
+
+.theme-icon {
+  color: var(--primary);
 }
 
 /* ---- Responsive ---- */
